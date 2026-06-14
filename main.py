@@ -11,7 +11,7 @@ from parameterize import parameterize
 """
 
 n = 4  # amount of data points
-d = 2  # amount of control points (Bézier curve Degree). If d<n, get best solution by LSM
+d = n  # amount of control points (Bézier curve Degree). If d<n, get best solution by LSM
 
 rb = 10  # Bounds for random data points
 
@@ -93,5 +93,6 @@ plt.plot(fitted_bezier_chordal[:, 0], fitted_bezier_chordal[:, 1],
 # PLOTTING
 
 plt.title("Fitted Bézier Curves")
+plt.tight_layout()
 plt.legend()
 plt.show()

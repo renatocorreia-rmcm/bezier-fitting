@@ -1,5 +1,3 @@
-# Bezier Fitting
-
 > Aproximação de uma curva de Bézier paramétrica de grau arbitrário (n) a um conjunto de
 pontos aleatórios. Coloque um slide-button (variável p) para controlar o número de pontos
 (que será igual a p+1, p>3) a serem aproximados pela curva de Bézier, e outro slide-button
@@ -16,13 +14,17 @@ normalizadas por esse total (vão ficar entre 0 e 1). Encontre pelo MMQ as coord
 pontos de controle (um MMQ para as abscissas e um MMQ para as ordenadas), desenhe a
 curva e exiba o erro residual total para cada tipo de parametrização, sendo este a soma dos
 erros nas abscissas e nas ordenadas (e =||A x - b|| para cada dimensão, onde x é a solução aproximada encontrada). Projeto em trio.
+# Bezier Fitting
+
 
 
 Suppose you have $n$ data points `(x, y)` and you want to find the Bezier Curve of degree $d$ that better fits them. (If $d \ge n$, its a perfect fit)
 
-A bezier curve is a interpolation of given "control points". (A Linear Combination with summing-one weights)
+A bezier curve is a interpolation of given *control points*. (A Linear Combination with summing-one weights).
 
-This program finds such control points.
+This program finds such *control points*.
+
+![Program Output Example](assets/Figure_3.svg)
 
 # Data points
 
