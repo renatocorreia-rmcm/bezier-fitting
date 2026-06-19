@@ -1,86 +1,91 @@
-# todo: show resulting fitted control points
-#   plot error as imshow 2x2 matrix (parameterization method) x (axis)
-
-# todo: save A fig
-
-
 import numpy as np
 from random import randrange
 
 import bezier
 from parameterize import parameterize
-from visualizer import experiment_show
+from visualizer import experiment_show, matrix_show
 
 """
     EXPERIMENT PARAMETERS
 """
 
-n = 4  # amount of data points
-d = exp_id  # amount of control points (Bézier curve Degree). If d<n, get best solution by LSM
+for exp_id in range(1,9):
+    n = 4  # amount of data points
+    d = exp_id  # amount of control points (Bézier curve Degree). If d<n, get best solution by LSM
 
-rb = 10  # Bounds for random data points
+    rb = 10  # Bounds for random data points
 
-"""
-    DATA POINTS
-"""
+    """
+        DATA POINTS
+    """
 
-#data_points = np.array([[randrange(-rb, rb), randrange(-rb, rb)] for i in range(n)])
+    #data_points = np.array([[randrange(-rb, rb), randrange(-rb, rb)] for i in range(n)])
 
-data_points = np.array([[7, -10],[-7, -10],[-3, -4],[-6, -3],])
-n = len(data_points)  
+    data_points = np.array([[7, -10],[-7, -10],[-3, -4],[-6, -3],])
+    n = len(data_points)  
 
-print('np.array([', end='')
-for data_point in data_points:
-    print(f"[{data_point[0]}, {data_point[1]}],", end='')
-print('])')
+    print('np.array([', end='')
+    for data_point in data_points:
+        print(f"[{data_point[0]}, {data_point[1]}],", end='')
+    print('])')
 
-"""
-    AUTO-PARAMETERIZATION
-"""
+    """
+        AUTO-PARAMETERIZATION
+    """
 
-parameters_uniform = parameterize(data_points, 0)
-parameters_chordal = parameterize(data_points, 1)
+    parameters_uniform = parameterize(data_points, 0)
+    parameters_chordal = parameterize(data_points, 1)
 
-"""
-    BEZIER FITTING
-"""
+    """
+        BEZIER FITTING
+    """
 
-# find control points
-control_points_uniform, error_uniform = bezier.fit(data_points, parameters_uniform, d)
-control_points_chordal, error_chordal = bezier.fit(data_points, parameters_chordal, d)
+    # find control points
+    control_points_uniform, error_uniform, A_uniform = bezier.fit(data_points, parameters_uniform, d)
+    control_points_chordal, error_chordal, A_chordal = bezier.fit(data_points, parameters_chordal, d)
 
-# sample polynomial
-samples = np.linspace(0, 1, 10 * n)  # 8 samples per segment
+    # sample polynomial
+    samples = np.linspace(0, 1, 10 * n)  # 8 samples per segment
 
-fitted_bezier_uniform = np.array(
-    [bezier.interpolate(control_points_uniform, t) for t in samples]
-)
-fitted_data_points_uniform = np.array(
-    [bezier.interpolate(control_points_uniform, t) for t in parameters_uniform]
-)
-
-
-fitted_bezier_chordal = np.array(
-    [bezier.interpolate(control_points_chordal, t) for t in samples]
-)
-fitted_data_points_chordal = np.array(
-    [bezier.interpolate(control_points_chordal, t) for t in parameters_chordal]
-)
+    fitted_bezier_uniform = np.array(
+        [bezier.interpolate(control_points_uniform, t) for t in samples]
+    )
+    fitted_data_points_uniform = np.array(
+        [bezier.interpolate(control_points_uniform, t) for t in parameters_uniform]
+    )
 
 
-"""
-    PLOTTING
-"""
+    fitted_bezier_chordal = np.array(
+        [bezier.interpolate(control_points_chordal, t) for t in samples]
+    )
+    fitted_data_points_chordal = np.array(
+        [bezier.interpolate(control_points_chordal, t) for t in parameters_chordal]
+    )
 
-experiment_show(
-    n, d,
-    data_points,
 
-    fitted_bezier_uniform,
-    fitted_data_points_uniform,
-    error_uniform,
+    """
+        PLOTTING
+    """
 
-    fitted_bezier_chordal,
-    fitted_data_points_chordal,
-    error_chordal,
-)
+    experiment_show(
+        n, d,
+        data_points,
+
+        fitted_bezier_uniform,
+        fitted_data_points_uniform,
+        error_uniform,
+
+        fitted_bezier_chordal,
+        fitted_data_points_chordal,
+        error_chordal,
+    )
+
+    matrix_show(
+        np.linalg.pinv(A_uniform),
+        f"A uniform\nn={n}, d={d}"
+    )
+
+    matrix_show(
+        np.linalg.pinv(A_chordal),
+        f"A chordal\nn={n}, d={d}"
+    )

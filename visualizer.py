@@ -53,18 +53,23 @@ def plot_error_matrix(ax, error_uniform, error_chordal):
     ax.set_title("Average Error")
 
 
-def plot_a_matrix(ax, A):
+def matrix_show(A, title):
     """Plots the system Matrix A with cell value overlays."""
-    im = ax.imshow(A, cmap="cubehelix")
+    fig, ax = plt.subplots(figsize=(5, 5))
+
+
+    im = ax.imshow(A, cmap="YlGnBu")
 
     for i, line in enumerate(A):
         for j, cell in enumerate(line):
-            text_color = 'w' if cell <= 0.5 else 'k'
+            text_color = 'w' if cell >= 0.5 else 'k'
             ax.text(j, i, f"{cell:.2f}", ha="center", va="center", color=text_color)
 
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title("Matrix A")
+    ax.set_title(title)
+    plt.savefig(f"output/{title}.svg".replace("\n", "_").replace(" ", "_").replace("=", "").replace(",", ""))
+    plt.close(fig)
 
 
 def experiment_show(
