@@ -28,6 +28,11 @@ data_points = np.array(
     [[randrange(-rb, rb), randrange(-rb, rb)] for i in range(n)]
 )
 
+print('np.array([', end='')
+for data_point in data_points:
+    print(f"[{data_point[0]}, {data_point[1]}],", end='')
+print('])')
+
 """
     AUTO-PARAMETERIZATION
 """
